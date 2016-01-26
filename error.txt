@@ -1,0 +1,65 @@
+[   Server               ]: SV:  VAC secure mode is activated.
+[   Developer            ]: Received server welcome from GC.
+[   General              ]: Version out of date (GC wants 1245, we are 1246)!
+[   Developer            ]: ...\team_horde_defence\scripts\vscripts\addon_game_mode.lua:58: attempt to index global 'GameMode' (a nil value)
+[   Developer            ]: stack traceback:
+[   Developer            ]: 	...\team_horde_defence\scripts\vscripts\addon_game_mode.lua:58: in main chunk
+[ W VScript              ]: Script Runtime Error: ...\team_horde_defence\scripts\vscripts\addon_game_mode.lua:58: attempt to index global 'GameMode' (a nil value)
+[ W VScript              ]: stack traceback:
+[ W VScript              ]: 	...\team_horde_defence\scripts\vscripts\addon_game_mode.lua:58: in main chunk
+[ W VScript              ]: Error running script named addon_game_mode
+[ W ResourceSystem       ]: File error loading resource header "materials/effects/fow_clouds_00.vtex_c" (Error: ERROR_FILEOPEN)
+[ W ResourceSystem       ]: File error loading resource header "materials/effects/fog_world_00.vtex_c" (Error: ERROR_FILEOPEN)
+[   Client               ]: CL:  CWaitForGameServerStartupPrerequisite done waiting for server
+[   Client               ]: CL:  PS_SATISFIED CWaitForGameServerStartupPrerequisite in sequence for CGameClientConnectPrerequisite
+[   Client               ]: CL:  CCreateGameClientJob creating client connection to 'loopback'
+[   Client               ]: CL:  PS_SATISFIED CCreateGameClientPrerequisite in sequence for CGameClientConnectPrerequisite
+[   Client               ]: CL:  Sending connect to loopback
+[   Server               ]: SV:  Sending S2C_CHALLENGE [2072702211 auth 3] to loopback
+[   Client               ]: CL:  Received S2C_CHALLENGE [2072702211 auth 3] from loopback
+[   Client               ]: CL:  Sending C2S_CONNECT [43 protocol 2072702211 auth 3] to loopback
+[   Server               ]: SV:  Receiving C2S_CONNECT [protocol 43 2072702211 auth 3] from loopback
+[   Server               ]: SV:  Sending S2C_CONNECTION to loopback [addons:'team_horde_defence']
+[   Server               ]: SV:  Sending S2C_CONNECTION to loopback [addons:'team_horde_defence']
+[   Client               ]: CL:  Received S2C_CONNECTION from loopback [addons:'team_horde_defence']
+[   Client               ]: CL:  Connected to 'loopback'
+[   Server               ]: SV:  Sending server info to client 'Call me Jesus' at loopback
+[   Server               ]: SV:  WriteInitialSpawnGroups sending 1 groups
+[   Client               ]: CL:  PS_SATISFIED CConnectGameClientPrerequisite in sequence for CGameClientConnectPrerequisite
+[   Client               ]: Game: "Dota 2"
+[   Client               ]: Map: "main"
+[   Client               ]: Players: 1 (0 bots) / 64 humans
+[   Client               ]: Build: 6991
+[   Client               ]: Server Number: 12
+[   SignonState          ]: CL:  CNetworkGameClient::ProcessServerInfo
+[ W General              ]: Unknown Ability Damage Type Value: DAMAGE_TYPE_MAGIC!
+[ W General              ]: ILocalize::AddFile() failed to load file "resource/addon_english.txt".
+[   General              ]: Initializing script VM...
+[   General              ]: ...done
+[   General              ]: C:Gamerules: entering state 'DOTA_GAMERULES_STATE_INIT'
+[   Client               ]: CL:  CGameRulesGameSystem::GameInit installed game rules
+[   General              ]: Loading custom UI:
+[   General              ]: ReadSteamRemoteStorageFile( bufOut, "voice_ban.dt" ) -> 0.005197 seconds
+[   Server               ]: SV:  "Call me Jesus<1><[U:1:44693665]><>" STEAM USERID validated
+[   Client               ]: CL:  PS_SATISFIED CLoadStartupResourcePrerequisite in sequence for CGameClientConnectPrerequisite
+[   Client               ]: CL:  PS_SATISFIED CLoadSpawnGroupsPrerequisite in sequence for CGameClientConnectPrerequisite
+[   Client               ]: CL:  PS_SATISFIED CFinalizeConnectionPrerequisite in sequence for CGameClientConnectPrerequisite
+[   Client               ]: CL:  OnStatusFinished for CGameClientConnectPrerequisite
+[   Client               ]: CL:  CGameClientConnectPrerequisite connection succeeded
+[   General              ]: ChangeGameUIState: DOTA_GAME_UI_STATE_LOADING_SCREEN -> DOTA_GAME_UI_DOTA_INGAME
+[   Server               ]: SV:  IGameSystem::LoopActivateAllSystems
+[   Host                 ]: HO:  IGameSystem::LoopActivateAllSystems
+[   General              ]: Grid nav allocation size: 3158016
+[   VScript              ]: HORDE is loaded.
+[   Developer            ]: scripts/vscripts/utils/vscriptinit.lua:691: Unable to find think member function PreStartSetup.
+[   Developer            ]: stack traceback:
+[   Developer            ]: 	[C]: in function 'error'
+[   Developer            ]: 	scripts/vscripts/utils/vscriptinit.lua:691: in function 'SetThink'
+[   Developer            ]: 	...\team_horde_defence\scripts\vscripts\addon_game_mode.lua:36: in function 'InitGameMode'
+[   Developer            ]: 	...\team_horde_defence\scripts\vscripts\addon_game_mode.lua:26: in function <...\team_horde_defence\scripts\vscripts\addon_game_mode.lua:24>
+[ W VScript              ]: Script Runtime Error: scripts/vscripts/utils/vscriptinit.lua:691: Unable to find think member function PreStartSetup.
+[ W VScript              ]: stack traceback:
+[ W VScript              ]: 	[C]: in function 'error'
+[ W VScript              ]: 	scripts/vscripts/utils/vscriptinit.lua:691: in function 'SetThink'
+[ W VScript              ]: 	...\team_horde_defence\scripts\vscripts\addon_game_mode.lua:36: in function 'InitGameMode'
+[ W VScript              ]: 	...\team_horde_defence\scripts\vscripts\addon_game_mode.lua:26: in function <...\team_horde_defence\scripts\vscripts\addon_game_mode.lua:24>
