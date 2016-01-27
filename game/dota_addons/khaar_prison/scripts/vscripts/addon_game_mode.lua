@@ -11,6 +11,9 @@ local point_team_3
 local point_team_4
 local players_telepoted = false
 local players_count = 0
+local repeats = 0
+local radiant_players = {}
+local dire_players = {}
 local pre_start_check_completed = false
 
 function Precache( context )
@@ -77,25 +80,42 @@ function GameMode:InitGameMode()
   GameRules:GetGameModeEntity():SetTopBarTeamValuesVisible( false )
   GameRules:GetGameModeEntity():SetCameraDistanceOverride(1600)
   ListenToGameEvent( 'game_rules_state_change', Dynamic_Wrap(GameMode,'OnGameRulesChange'), self)
+  ListenToGameEvent('npc_spawned', Dynamic_Wrap(GameMode, 'OnNPCSpawned'), self)
 end
 
 function GameMode:OnGameRulesChange(keys)
-  if GameRules:State_Get() == DOTA_GAMERULES_STATE_STRATEGY_TIME then
-    PlayerResource:ReplaceHeroWith(0,'npc_dota_hero_wisp', 625 , 0) 
+  if GameRules:State_Get() == DOTA_GAMERULES_STATE_STRATEGY_TIME then 
     FindClearSpaceForUnit(PlayerResource:GetPlayer(0):GetAssignedHero(), point_team_1, false)
     SendToConsole("dota_camera_center")
   elseif GameRules:State_Get() == DOTA_GAMERULES_STATE_GAME_IN_PROGRESS then
   end 
 end 
 
-function GameMode:_OnNPCSpawned(keys)
+function GameMode:OnNPCSpawned(keys)
   local npc = EntIndexToHScript(keys.entindex)
 
   if npc:IsRealHero() and npc.bFirstSpawned == nil then
     npc.bFirstSpawned = true
     GameMode:OnHeroInGame(npc)
-    print("NpcSpawn")
   end
+end
+
+function GameMode:OnHeroInGame(keys)
+  local npc = keys
+  if npc:IsHero() then
+    print("HERO SPAWNED")
+    if PlayerResource:GetTeam(npc:GetPlayerID()) == 2 then
+      if repeats < 4 then
+        print(npc:GetPlayerID())
+        PlayerResource:ReplaceHeroWith(npc:GetPlayerID(), "npc_dota_hero_wisp", 625, 0)
+        repeats = repeats + 1
+      else  
+        PlayerResource:ReplaceHeroWith(npc:GetPlayerID(), "npc_dota_hero_sven", 625, 0)  
+      end
+    else 
+      PlayerResource:ReplaceHeroWith(npc:GetPlayerID(), "npc_dota_hero_nevermore", 625, 0)    
+    end 
+  end 
 end
 
 function GameMode:OnThink()
@@ -106,4 +126,17 @@ function GameMode:OnThink()
       return nil
   end 
   return 1
+end
+
+function GetPlayersOnTeam()
+  for playerID = 0, 8 do
+      if PlayerResource:IsValidPlayerID(playerID) and PlayerResource:GetTeam(playerID) == teamNumber then
+           table.insert(radiant_players, playerID)  
+       end
+  end 
+  for playerID = 0, 8 do
+      if PlayerResource:IsValidPlayerID(playerID) and PlayerResource:GetTeam(playerID) == teamNumber then
+          table.insert(dire_players, playerID)  
+      end
+  end 
 end
