@@ -18,6 +18,7 @@ function Precache( context )
 	PrecacheUnitByNameSync("npc_dota_hero_sven", context)
 	PrecacheUnitByNameSync("npc_dota_hero_wisp", context)
 	PrecacheUnitByNameSync("npc_dota_hero_nevermore", context)
+	PrecacheUnitByNameSync("npc_dota_hero_antimage", context)
 end
 
 -- Create the game mode when we activate
@@ -97,7 +98,6 @@ function CAddonTemplateGameMode:OnGameRulesChange(keys)
        	end	
    		pre_start_check_completed = true
 		print("Player 0 name: " .. PlayerResource:GetPlayerName(0))
-		PlayerResource:ReplaceHeroWith(0,'npc_dota_hero_antimage', 625 , 0)
 		FindClearSpaceForUnit(PlayerResource:GetPlayer(0):GetAssignedHero(), point_team_1, false)
 		--[[ ===== CONNECT WHEN MORE THEN 1 PLAYER
 
@@ -111,6 +111,8 @@ function CAddonTemplateGameMode:OnGameRulesChange(keys)
 
 		--]]
 		SendToConsole("dota_camera_center")
+	elseif GameRules:State_Get() == DOTA_GAMERULES_STATE_PRE_GAME then
+		PlayerResource:ReplaceHeroWith(0,'npc_dota_hero_antimage', 625 , 0)	
 	end	
 end	
 
