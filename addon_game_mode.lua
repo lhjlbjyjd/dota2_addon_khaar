@@ -111,7 +111,7 @@ function CAddonTemplateGameMode:OnGameRulesChange(keys)
 
 		--]]
 		SendToConsole("dota_camera_center")
-	elseif GameRules:State_Get() == DOTA_GAMERULES_STATE_PRE_GAME then
+	elseif GameRules:State_Get() == DOTA_GAMERULES_STATE_GAME_IN_PROGRESS then
 		PlayerResource:ReplaceHeroWith(0,'npc_dota_hero_antimage', 625 , 0)	
 	end	
 end	
