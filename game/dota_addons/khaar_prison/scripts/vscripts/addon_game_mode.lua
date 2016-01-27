@@ -96,13 +96,10 @@ function GameMode:OnNPCSpawned(keys)
 
   if npc:IsRealHero() and npc.bFirstSpawned == nil then
     npc.bFirstSpawned = true
-    Timers:CreateTimer(1.0, GameMode:OnHeroInGame(npc))
-  end
-end
-
-function GameMode:OnHeroInGame(keys)
-  local npc = keys
+    Timers:CreateTimer(5.0, function()
+      local npc = keys
   print("HERO SPAWNED")
+  print(PlayerResource:IsValidPlayer(npc:GetPlayerID()))
   if PlayerResource:GetTeam(npc:GetPlayerID()) == 2 then
     if repeats < 4 then
       print(npc:GetPlayerID())
@@ -114,6 +111,7 @@ function GameMode:OnHeroInGame(keys)
   else 
     PlayerResource:ReplaceHeroWith(npc:GetPlayerID(), "npc_dota_hero_nevermore", 625, 0)    
   end 
+  end)
 end
 
 function GameMode:OnThink()
@@ -124,4 +122,9 @@ function GameMode:OnThink()
       return nil
   end 
   return 1
+  end
+end
+
+function GameMode:OnHeroInGame(keys)
+  
 end
