@@ -1,0 +1,11 @@
+"antimage_blink"
+	{
+"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"radius"				"1500"
+			}
+		}
+	}
