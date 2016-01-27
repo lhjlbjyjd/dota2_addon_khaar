@@ -1,1 +1,1 @@
-# This is my new Dota 2 addon
+This is my dota 2 addon

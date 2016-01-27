@@ -99,6 +99,7 @@ function CAddonTemplateGameMode:OnGameRulesChange(keys)
        	end	
    		pre_start_check_completed = true
 		print("Player 0 name: " .. PlayerResource:GetPlayerName(0))--]]
+		--
 		FindClearSpaceForUnit(PlayerResource:GetPlayer(0):GetAssignedHero(), point_team_1, false)
 		--[[ ===== CONNECT WHEN MORE THEN 1 PLAYER
 
