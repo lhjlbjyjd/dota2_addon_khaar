@@ -33,8 +33,7 @@ function CAddonTemplateGameMode:InitGameMode()
 	point_team_3 = Entities:FindByName( nil, "point_teleport_spot_team_3" ):GetAbsOrigin()
 	point_team_4 = Entities:FindByName( nil, "point_teleport_spot_team_4" ):GetAbsOrigin()
 	GameRules:SetHeroSelectionTime( 0.0 )
-	GameRules:GetGameModeEntity():SetThink( "PreStartSetup", self, "PreStartSetupThink", 2 )
-	GameRules:GetGameModeEntity():SetThink( "OnThink", self, "GlobalThink", 2 )
+	--GameRules:GetGameModeEntity():SetThink( "OnThink", self, "GlobalThink", 2 )
 	GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_GOODGUYS, 8 )
 	GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_BADGUYS, 1 )
 	GameRules:SetUseUniversalShopMode( true )
@@ -53,57 +52,32 @@ function CAddonTemplateGameMode:InitGameMode()
 	GameRules:GetGameModeEntity():SetTopBarTeamValuesVisible( false )
 	GameRules:GetGameModeEntity():SetCameraDistanceOverride(1600)
 	ListenToGameEvent('player_connect_full', Dynamic_Wrap(CAddonTemplateGameMode, 'OnPlayerConnectFull'), self)
+	ListenToGameEvent( 'game_rules_state_change', Dynamic_Wrap(CAddonTemplateGameMode,'OnGameRulesChange'), self)
 end
 
 function CAddonTemplateGameMode:OnPlayerConnectFull(keys)
-	CreateHeroForPlayer('npc_dota_hero_wisp', PlayerInstanceFromIndex(0))
-	CreateHeroForPlayer('npc_dota_hero_wisp', PlayerInstanceFromIndex(1))
-	CreateHeroForPlayer('npc_dota_hero_wisp', PlayerInstanceFromIndex(2))
-	CreateHeroForPlayer('npc_dota_hero_wisp', PlayerInstanceFromIndex(3))
-	CreateHeroForPlayer('npc_dota_hero_sven', PlayerInstanceFromIndex(4))
-	CreateHeroForPlayer('npc_dota_hero_sven', PlayerInstanceFromIndex(5))
-	CreateHeroForPlayer('npc_dota_hero_sven', PlayerInstanceFromIndex(6))
-	CreateHeroForPlayer('npc_dota_hero_sven', PlayerInstanceFromIndex(7))
-	CreateHeroForPlayer('npc_dota_hero_nevermore', PlayerInstanceFromIndex(8))
-end
-function CAddonTemplateGameMode:OnThink()
-	print('Think')
-	if GameRules:State_Get() == DOTA_GAMERULES_STATE_GAME_IN_PROGRESS then
-		-- SOME CODE HERE
-		elseif GameRules:State_Get() == DOTA_GAMERULES_STATE_PRE_GAME and players_telepoted == false then
-			print("Player 0 name: " ..PlayerResource:GetPlayerName(0))
-			FindClearSpaceForUnit(PlayerResource:GetPlayer(0):GetAssignedHero(), point_team_1, false)
-
-			--[[ ===== CONNECT WHEN MORE THEN 1 PLAYER
-
-			FindClearSpaceForUnit(PlayerResource:GetPlayer(1):GetAssignedHero(), point_team_2, false)
-			FindClearSpaceForUnit(PlayerResource:GetPlayer(2):GetAssignedHero(), point_team_3, false)
-			FindClearSpaceForUnit(PlayerResource:GetPlayer(3):GetAssignedHero(), point_team_4, false)
-			FindClearSpaceForUnit(PlayerResource:GetPlayer(4):GetAssignedHero(), point_team_1, false)
-			FindClearSpaceForUnit(PlayerResource:GetPlayer(5):GetAssignedHero(), point_team_2, false)
-			FindClearSpaceForUnit(PlayerResource:GetPlayer(6):GetAssignedHero(), point_team_3, false)
-			FindClearSpaceForUnit(PlayerResource:GetPlayer(7):GetAssignedHero(), point_team_4, false)
-
-			--]]
-
-			SendToConsole("dota_camera_center")
-			players_telepoted = true
-		elseif GameRules:State_Get() >= DOTA_GAMERULES_STATE_POST_GAME then
-			return nil
-	end	
-	return 1
+		CreateHeroForPlayer('npc_dota_hero_wisp', PlayerInstanceFromIndex(0))
+		CreateHeroForPlayer('npc_dota_hero_wisp', PlayerInstanceFromIndex(1))
+		CreateHeroForPlayer('npc_dota_hero_wisp', PlayerInstanceFromIndex(2))
+		CreateHeroForPlayer('npc_dota_hero_wisp', PlayerInstanceFromIndex(3))
+		CreateHeroForPlayer('npc_dota_hero_wisp', PlayerInstanceFromIndex(4))
+		CreateHeroForPlayer('npc_dota_hero_wisp', PlayerInstanceFromIndex(5))
+		CreateHeroForPlayer('npc_dota_hero_wisp', PlayerInstanceFromIndex(6))
+		CreateHeroForPlayer('npc_dota_hero_wisp', PlayerInstanceFromIndex(7))
+		CreateHeroForPlayer('npc_dota_hero_wisp', PlayerInstanceFromIndex(8))
 end
 
-function CAddonTemplateGameMode:PreStartSetup()
-	print("PreStartSetupThink")
-	if pre_start_check_completed == false and GameRules:State_Get() == DOTA_GAMERULES_STATE_HERO_SELECTION then
+function CAddonTemplateGameMode:OnGameRulesChange(keys)
+	if GameRules:State_Get() == DOTA_GAMERULES_STATE_STRATEGY_TIME then
+		print("IT\'S STRATEGY TIME")
 		i=0
 		while i ~= 9 do
 			if PlayerResource:IsValidPlayer(i) then
 				players_count = players_count + 1
-				end
-		i= i + 1	
+			end
+			i= i + 1	
 		end	
+		print(players_count)
 		i=0
 	    for _,hero in pairs( Entities:FindAllByClassname( "npc_dota_hero_*")) do
 	    	print(i .. players_count)
@@ -120,9 +94,32 @@ function CAddonTemplateGameMode:PreStartSetup()
        		end
        		print("Done connecting hero to player " .. id)
        		i = i + 1
-   		end
+       	end	
    		pre_start_check_completed = true
-   		return nil
-   	end
-   	return 0.01
+		print("Player 0 name: " .. PlayerResource:GetPlayerName(0))
+		PlayerResource:ReplaceHeroWith(0,'npc_dota_hero_antimage', 625 , 0)
+		FindClearSpaceForUnit(PlayerResource:GetPlayer(0):GetAssignedHero(), point_team_1, false)
+		--[[ ===== CONNECT WHEN MORE THEN 1 PLAYER
+
+			FindClearSpaceForUnit(PlayerResource:GetPlayer(1):GetAssignedHero(), point_team_2, false)
+			FindClearSpaceForUnit(PlayerResource:GetPlayer(2):GetAssignedHero(), point_team_3, false)
+			FindClearSpaceForUnit(PlayerResource:GetPlayer(3):GetAssignedHero(), point_team_4, false)
+			FindClearSpaceForUnit(PlayerResource:GetPlayer(4):GetAssignedHero(), point_team_1, false)
+			FindClearSpaceForUnit(PlayerResource:GetPlayer(5):GetAssignedHero(), point_team_2, false)
+			FindClearSpaceForUnit(PlayerResource:GetPlayer(6):GetAssignedHero(), point_team_3, false)
+			FindClearSpaceForUnit(PlayerResource:GetPlayer(7):GetAssignedHero(), point_team_4, false)
+
+		--]]
+		SendToConsole("dota_camera_center")
+	end	
 end	
+
+function CAddonTemplateGameMode:OnThink()
+	print('Think')
+	if GameRules:State_Get() == DOTA_GAMERULES_STATE_GAME_IN_PROGRESS then
+		-- SOME CODE HERE
+		elseif GameRules:State_Get() >= DOTA_GAMERULES_STATE_POST_GAME then
+			return nil
+	end	
+	return 1
+end
