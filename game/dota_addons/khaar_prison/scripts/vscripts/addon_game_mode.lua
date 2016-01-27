@@ -102,19 +102,17 @@ end
 
 function GameMode:OnHeroInGame(keys)
   local npc = keys
-  if npc:IsHero() then
-    print("HERO SPAWNED")
-    if PlayerResource:GetTeam(npc:GetPlayerID()) == 2 then
-      if repeats < 4 then
-        print(npc:GetPlayerID())
-        PlayerResource:ReplaceHeroWith(npc:GetPlayerID(), "npc_dota_hero_wisp", 625, 0)
-        repeats = repeats + 1
-      else  
-        PlayerResource:ReplaceHeroWith(npc:GetPlayerID(), "npc_dota_hero_sven", 625, 0)  
-      end
-    else 
-      PlayerResource:ReplaceHeroWith(npc:GetPlayerID(), "npc_dota_hero_nevermore", 625, 0)    
-    end 
+  print("HERO SPAWNED")
+  if PlayerResource:GetTeam(npc:GetPlayerID()) == 2 then
+    if repeats < 4 then
+      print(npc:GetPlayerID())
+      PlayerResource:ReplaceHeroWith(npc:GetPlayerID(), "npc_dota_hero_wisp", 625, 0)
+      repeats = repeats + 1
+    else  
+      PlayerResource:ReplaceHeroWith(npc:GetPlayerID(), "npc_dota_hero_sven", 625, 0)  
+    end
+  else 
+    PlayerResource:ReplaceHeroWith(npc:GetPlayerID(), "npc_dota_hero_nevermore", 625, 0)    
   end 
 end
 
@@ -126,17 +124,4 @@ function GameMode:OnThink()
       return nil
   end 
   return 1
-end
-
-function GetPlayersOnTeam()
-  for playerID = 0, 8 do
-      if PlayerResource:IsValidPlayerID(playerID) and PlayerResource:GetTeam(playerID) == teamNumber then
-           table.insert(radiant_players, playerID)  
-       end
-  end 
-  for playerID = 0, 8 do
-      if PlayerResource:IsValidPlayerID(playerID) and PlayerResource:GetTeam(playerID) == teamNumber then
-          table.insert(dire_players, playerID)  
-      end
-  end 
 end
