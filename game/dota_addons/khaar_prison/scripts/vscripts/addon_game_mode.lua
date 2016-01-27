@@ -96,7 +96,7 @@ function GameMode:OnNPCSpawned(keys)
 
   if npc:IsRealHero() and npc.bFirstSpawned == nil then
     npc.bFirstSpawned = true
-    GameMode:OnHeroInGame(npc)
+    Timers:CreateTimer(1.0, GameMode:OnHeroInGame(npc))
   end
 end
 
