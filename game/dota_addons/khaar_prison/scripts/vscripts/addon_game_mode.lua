@@ -5,10 +5,7 @@ require('gamemode')
 
 local i = 1
 local id = -1
-local point_team_1
-local point_team_2
-local point_team_3
-local point_team_4
+local team_point = {}
 local players_telepoted = false
 local players_count = 0
 local repeats = 0
@@ -56,10 +53,11 @@ end
 
 function GameMode:InitGameMode()
   print( "HORDE is loaded." )
-  point_team_1 = Entities:FindByName( nil, "point_teleport_spot_team_1" ):GetAbsOrigin()
-  point_team_2 = Entities:FindByName( nil, "point_teleport_spot_team_2" ):GetAbsOrigin()
-  point_team_3 = Entities:FindByName( nil, "point_teleport_spot_team_3" ):GetAbsOrigin()
-  point_team_4 = Entities:FindByName( nil, "point_teleport_spot_team_4" ):GetAbsOrigin()
+  table.insert(team_point, {Entities:FindByName( nil, "point_teleport_spot_team_1" ):GetAbsOrigin(),
+                            Entities:FindByName( nil, "point_teleport_spot_team_2" ):GetAbsOrigin(),
+                            Entities:FindByName( nil, "point_teleport_spot_team_3" ):GetAbsOrigin(),
+                            Entities:FindByName( nil, "point_teleport_spot_team_4" ):GetAbsOrigin()
+              })
   GameRules:SetHeroSelectionTime( 0.0 )
   --GameRules:GetGameModeEntity():SetThink( "OnThink", self, "GlobalThink", 2 )
   GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_GOODGUYS, 8 )
@@ -86,7 +84,6 @@ end
 
 function GameMode:OnGameRulesChange(keys)
   if GameRules:State_Get() == DOTA_GAMERULES_STATE_STRATEGY_TIME then 
-    FindClearSpaceForUnit(PlayerResource:GetPlayer(0):GetAssignedHero(), point_team_1, false)
     SendToConsole("dota_camera_center")
   elseif GameRules:State_Get() == DOTA_GAMERULES_STATE_GAME_IN_PROGRESS then
   end 
@@ -94,22 +91,13 @@ end
 
 function GameMode:OnNPCSpawned(keys)
   local npc = EntIndexToHScript(keys.entindex)
-
   if npc:IsRealHero() and npc.bFirstSpawned == nil then
     npc.bFirstSpawned = true
-  print("HERO SPAWNED")
-  print(PlayerResource:IsValidPlayer(npc:GetPlayerOwnerID()))
-  if PlayerResource:GetTeam(npc:GetPlayerID()) == 2 and GameMode:PlayerHaveNoHero(npc:GetPlayerID()) == true then
-    if repeats < 4 then
-      print(npc:GetPlayerOwnerID())
-      PlayerResource:ReplaceHeroWith(npc:GetPlayerOwnerID(), "npc_dota_hero_wisp", 625, 0)
-      repeats = repeats + 1
-    else  
-      PlayerResource:ReplaceHeroWith(npc:GetPlayerOwnerID(), "npc_dota_hero_sven", 625, 0)  
-    end
-  else 
-    PlayerResource:ReplaceHeroWith(npc:GetPlayerOwnerID(), "npc_dota_hero_nevermore", 625, 0)    
-  end 
+    print("HERO SPAWNED")
+    print(PlayerResource:IsValidPlayer(npc:GetPlayerOwnerID()))
+    Timers:CreateTimer(0.5, function()
+      GameMode:HeroSpawned(npc)
+    end)
 end
 
 function GameMode:OnThink()
@@ -132,4 +120,36 @@ function GameMode:PlayerHaveNoHero(keys)
     end
     table.insert(players_heave_heroes, playerID)
     return true      
+end
+
+function GameMode:HeroSpawned(keys)
+  local npc = keys
+  local sven_team_point = 0
+  local point
+  if PlayerResource:GetTeam(npc:GetPlayerID()) == 2 then
+    if GameMode:PlayerHaveNoHero(npc:GetPlayerID()) == true then
+      if repeats < 4 then
+        print(team_point[repeats + 1])
+        print("Giving player " .. npc:GetPlayerOwnerID() .. "a new hero")
+        for k,v in pairs(team_point) do
+          if k == (repeats + 1) then
+            point = v
+          end  
+        end 
+        FindClearSpaceForUnit(PlayerResource:ReplaceHeroWith(npc:GetPlayerOwnerID(), "npc_dota_hero_wisp", 625, 0), point, false)
+        repeats = repeats + 1
+      else  
+        for k,v in pairs(team_point) do
+          if k == (sven_team_point + 1) then
+            point = v
+          end  
+        end
+        PlayerResource:ReplaceHeroWith(npc:GetPlayerOwnerID(), "npc_dota_hero_sven", 625, 0)
+        FindClearSpaceForUnit(PlayerResource:ReplaceHeroWith(npc:GetPlayerOwnerID(), "npc_dota_hero_wisp", 625, 0), point, false)
+        sven_team_point= sven_team_point + 1  
+      end
+    end  
+    else 
+      PlayerResource:ReplaceHeroWith(npc:GetPlayerOwnerID(), "npc_dota_hero_nevermore", 625, 0)    
+    end
 end
