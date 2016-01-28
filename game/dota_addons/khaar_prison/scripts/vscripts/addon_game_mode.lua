@@ -139,7 +139,7 @@ function GameMode:HeroSpawned(keys)
         end 
         hero =  PlayerResource:ReplaceHeroWith(npc:GetPlayerOwnerID(), "npc_dota_hero_wisp", 625, 0)
         print(point)
-        FindClearSpaceForUnit(hero, "npc_dota_hero_wisp", 625, 0), point, false)
+        FindClearSpaceForUnit(hero, point, false)
         repeats = repeats + 1
       else  
         for k,v in pairs(team_point) do
