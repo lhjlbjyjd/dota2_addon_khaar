@@ -14,6 +14,7 @@ local players_count = 0
 local repeats = 0
 local radiant_players = {}
 local dire_players = {}
+local players_heave_heroes = {}
 local pre_start_check_completed = false
 
 function Precache( context )
@@ -96,23 +97,19 @@ function GameMode:OnNPCSpawned(keys)
 
   if npc:IsRealHero() and npc.bFirstSpawned == nil then
     npc.bFirstSpawned = true
-    Timers:CreateTimer(5.0, function()
-      local npc = keys
   print("HERO SPAWNED")
   print(PlayerResource:IsValidPlayer(npc:GetPlayerOwnerID()))
-  print(GetSelectedHeroName(0))
-  if PlayerResource:GetTeam(npc:GetPlayerID()) == 2 then
+  if PlayerResource:GetTeam(npc:GetPlayerID()) == 2 and GameMode:PlayerHaveNoHero(npc:GetPlayerID()) == true then
     if repeats < 4 then
-      print(npc:GetPlayerID())
-      PlayerResource:ReplaceHeroWith(npc:GetPlayerID(), "npc_dota_hero_wisp", 625, 0)
+      print(npc:GetPlayerOwnerID())
+      PlayerResource:ReplaceHeroWith(npc:GetPlayerOwnerID(), "npc_dota_hero_wisp", 625, 0)
       repeats = repeats + 1
     else  
-      PlayerResource:ReplaceHeroWith(npc:GetPlayerID(), "npc_dota_hero_sven", 625, 0)  
+      PlayerResource:ReplaceHeroWith(npc:GetPlayerOwnerID(), "npc_dota_hero_sven", 625, 0)  
     end
   else 
-    PlayerResource:ReplaceHeroWith(npc:GetPlayerID(), "npc_dota_hero_nevermore", 625, 0)    
+    PlayerResource:ReplaceHeroWith(npc:GetPlayerOwnerID(), "npc_dota_hero_nevermore", 625, 0)    
   end 
-  end)
 end
 
 function GameMode:OnThink()
@@ -126,6 +123,13 @@ function GameMode:OnThink()
   end
 end
 
-function GameMode:OnHeroInGame(keys)
-  
+function GameMode:PlayerHaveNoHero(keys)
+  local playerID = keys
+    for _,v in pairs(players_heave_heroes) do
+      if v == playerID then
+        return false
+      end
+    end
+    table.insert(players_heave_heroes, playerID)
+    return true      
 end
