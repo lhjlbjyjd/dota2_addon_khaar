@@ -126,6 +126,7 @@ function GameMode:HeroSpawned(keys)
   local npc = keys
   local sven_team_point = 0
   local point
+  local hero
   if PlayerResource:GetTeam(npc:GetPlayerID()) == 2 then
     if GameMode:PlayerHaveNoHero(npc:GetPlayerID()) == true then
       if repeats < 4 then
@@ -136,7 +137,9 @@ function GameMode:HeroSpawned(keys)
             point = v
           end  
         end 
-        FindClearSpaceForUnit(PlayerResource:ReplaceHeroWith(npc:GetPlayerOwnerID(), "npc_dota_hero_wisp", 625, 0), point, false)
+        hero =  PlayerResource:ReplaceHeroWith(npc:GetPlayerOwnerID(), "npc_dota_hero_wisp", 625, 0)
+        print(point)
+        FindClearSpaceForUnit(hero, "npc_dota_hero_wisp", 625, 0), point, false)
         repeats = repeats + 1
       else  
         for k,v in pairs(team_point) do
