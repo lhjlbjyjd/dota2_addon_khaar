@@ -99,7 +99,8 @@ function GameMode:OnNPCSpawned(keys)
     Timers:CreateTimer(5.0, function()
       local npc = keys
   print("HERO SPAWNED")
-  print(PlayerResource:IsValidPlayer(npc:GetPlayerID()))
+  print(PlayerResource:IsValidPlayer(npc:GetPlayerOwnerID()))
+  print(GetSelectedHeroName(0))
   if PlayerResource:GetTeam(npc:GetPlayerID()) == 2 then
     if repeats < 4 then
       print(npc:GetPlayerID())
