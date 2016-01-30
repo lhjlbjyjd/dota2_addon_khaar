@@ -163,6 +163,7 @@ end
 function GameMode:SpawnAttakers()
 
 local DOTA_ATTAK_WAVE = 1
+local DOTA_ATTAK_WAVE_COPY
 local attak_units = {
   "npc_dota_creature_kobold_tunneler",
   "npc_dota_creature_gnoll_assassin",
@@ -183,9 +184,9 @@ while DOTA_ATTAKER_UNITS_COUNT_IN_WAVE ~= 0 do
 end 
 
 DOTA_ATTAKER_UNITS_COUNT_IN_WAVE = 10
-
-for _,v in pairs( Entities:FindByClassname(nil, attak_units[ DOTA_ATTAK_WAVE ]) ) do
-  CreepsAI:MakeInstance(v,{v:GetAbsOrigin(), aggroRange = 250, leashRange = 250})
-end  
+DOTA_ATTAK_WAVE_COPY = DOTA_ATTAK_WAVE
 DOTA_ATTAK_WAVE = DOTA_ATTAK_WAVE + 1 
+for _,v in pairs( Entities:FindAllByClassname(attak_units[ DOTA_ATTAK_WAVE_COPY ]) ) do
+  CreepsAI:MakeInstance(v,{v:GetAbsOrigin(), aggroRange = 0, leashRange = 0})
+end  
 end
