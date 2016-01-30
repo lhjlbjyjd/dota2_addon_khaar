@@ -2,6 +2,7 @@
 
 require('internal/util')
 require('gamemode')
+require('creeps_ai')
 
 local i = 1
 local id = -1
@@ -53,12 +54,11 @@ end
 
 function GameMode:InitGameMode()
   print( "HORDE is loaded." )
-  table.insert(team_point, {Entities:FindByName( nil, "point_teleport_spot_team_1" ):GetAbsOrigin(),
-                            Entities:FindByName( nil, "point_teleport_spot_team_2" ):GetAbsOrigin(),
-                            Entities:FindByName( nil, "point_teleport_spot_team_3" ):GetAbsOrigin(),
-                            Entities:FindByName( nil, "point_teleport_spot_team_4" ):GetAbsOrigin()
-              })
   GameRules:SetHeroSelectionTime( 0.0 )
+  table.insert(team_point, Entities:FindByName( nil, "point_teleport_spot_team_1" ):GetAbsOrigin())
+  table.insert(team_point, Entities:FindByName( nil, "point_teleport_spot_team_2" ):GetAbsOrigin())
+  table.insert(team_point, Entities:FindByName( nil, "point_teleport_spot_team_3" ):GetAbsOrigin())
+  table.insert(team_point, Entities:FindByName( nil, "point_teleport_spot_team_4" ):GetAbsOrigin())
   --GameRules:GetGameModeEntity():SetThink( "OnThink", self, "GlobalThink", 2 )
   GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_GOODGUYS, 8 )
   GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_BADGUYS, 1 )
@@ -138,7 +138,6 @@ function GameMode:HeroSpawned(keys)
           end  
         end 
         hero =  PlayerResource:ReplaceHeroWith(npc:GetPlayerOwnerID(), "npc_dota_hero_wisp", 625, 0)
-        print(point)
         FindClearSpaceForUnit(hero, point, false)
         repeats = repeats + 1
       else  
