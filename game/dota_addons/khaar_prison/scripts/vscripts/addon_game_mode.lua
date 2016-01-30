@@ -58,13 +58,13 @@ end
 function GameMode:InitGameMode()
   print( "HORDE is loaded." )
   GameRules:SetHeroSelectionTime( 0.0 )
-  --GameRules:GetGameModeEntity():SetThink( "OnThink", self, "GlobalThink", 2 )
+  GameRules:GetGameModeEntity():SetThink( "OnThink", self, "GlobalThink", 2 )
   GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_GOODGUYS, 8 )
   GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_BADGUYS, 1 )
   GameRules:SetUseUniversalShopMode( true )
   GameRules:SetTimeOfDay( 0.75 )
   GameRules:SetHeroRespawnEnabled( true )
-  GameRules:SetPreGameTime( 2.0 )
+  GameRules:SetPreGameTime( 10.0 )
   GameRules:SetPostGameTime( 60.0 )
   GameRules:SetTreeRegrowTime( 60.0 )
   GameRules:SetHeroMinimapIconScale( 0.7 )
@@ -179,10 +179,13 @@ while DOTA_ATTAKER_UNITS_COUNT_IN_WAVE ~= 0 do
   CreateUnitByName( attak_units[ DOTA_ATTAK_WAVE ], team_point[2] , true, nil, nil, DOTA_TEAM_BADGUYS )
   CreateUnitByName( attak_units[ DOTA_ATTAK_WAVE ], team_point[3] , true, nil, nil, DOTA_TEAM_BADGUYS )
   CreateUnitByName( attak_units[ DOTA_ATTAK_WAVE ], team_point[4] , true, nil, nil, DOTA_TEAM_BADGUYS )
+  DOTA_ATTAKER_UNITS_COUNT_IN_WAVE = DOTA_ATTAKER_UNITS_COUNT_IN_WAVE - 1
 end 
 
+DOTA_ATTAKER_UNITS_COUNT_IN_WAVE = 10
+
 for _,v in pairs( Entity:FindByClassname(nil, attak_units[ DOTA_ATTAK_WAVE ])) do
-  CreepsAI:MakeInstance(v,{v:GetAbsOrigin, aggroRange = 250, leashRange = 250})
+  CreepsAI:MakeInstance(v,{v:GetAbsOrigin(), aggroRange = 250, leashRange = 250})
 end  
 DOTA_ATTAK_WAVE = DOTA_ATTAK_WAVE + 1 
 end
