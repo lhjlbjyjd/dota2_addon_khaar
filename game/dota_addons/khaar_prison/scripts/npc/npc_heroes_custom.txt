@@ -3,7 +3,7 @@
   "npc_dota_hero_wisp_modified"
   {
     "override_hero"     "npc_dota_hero_wisp"
-    "Ability1"        "wisp_tether_modified" 
+    "Ability1"        "wisp_tether" 
     "VisionNighttimeRange"    "1800"
   }
 }
