@@ -10,13 +10,13 @@ local team_point = {}
 local players_telepoted = false
 local players_count = 0
 local repeats = 0
-local creeps_ai_test = {}
-local creeps_ai_test_params
+local creep_spawn_point = {}
 local radiant_players = {}
 local dire_players = {}
 local players_heave_heroes = {}
 local pre_start_check_completed = false
-local DOTA_ATTAKER_UNITS_COUNT_IN_WAVE = 10
+local DOTA_ATTAKER_UNITS_COUNT_IN_WAVE = 25
+local DOTA_ATTAK_WAVE = 1
 
 function Precache( context )
 PrecacheUnitByNameSync("npc_dota_hero_sven", context)
@@ -79,6 +79,10 @@ function GameMode:InitGameMode()
   GameRules:GetGameModeEntity():SetCameraDistanceOverride(1600)
   ListenToGameEvent( 'game_rules_state_change', Dynamic_Wrap(GameMode,'OnGameRulesChange'), self)
   ListenToGameEvent('npc_spawned', Dynamic_Wrap(GameMode, 'OnNPCSpawned'), self)
+  table.insert(creep_spawn_point, Entities:FindByName( nil, "spawn_point_1" ):GetAbsOrigin())
+  table.insert(creep_spawn_point, Entities:FindByName( nil, "spawn_point_2" ):GetAbsOrigin())
+  table.insert(creep_spawn_point, Entities:FindByName( nil, "spawn_point_3" ):GetAbsOrigin())
+  table.insert(creep_spawn_point, Entities:FindByName( nil, "spawn_point_4" ):GetAbsOrigin())
   table.insert(team_point, Entities:FindByName( nil, "point_teleport_spot_team_1" ):GetAbsOrigin())
   table.insert(team_point, Entities:FindByName( nil, "point_teleport_spot_team_2" ):GetAbsOrigin())
   table.insert(team_point, Entities:FindByName( nil, "point_teleport_spot_team_3" ):GetAbsOrigin())
@@ -101,7 +105,6 @@ function GameMode:OnNPCSpawned(keys)
       GameMode:HeroSpawned(npc)
     end)
   else 
-    print(#creeps_ai_test)
   end  
 end
 
@@ -162,7 +165,6 @@ end
 
 function GameMode:SpawnAttakers()
 
-local DOTA_ATTAK_WAVE = 1
 local DOTA_ATTAK_WAVE_COPY
 local attak_units = {
   "npc_dota_creature_kobold_tunneler",
@@ -175,15 +177,13 @@ local attak_units = {
   "npc_dota_creature_berserk_zombie"
 }
 
-while DOTA_ATTAKER_UNITS_COUNT_IN_WAVE ~= 0 do 
-  CreateUnitByName( attak_units[ DOTA_ATTAK_WAVE ], team_point[1] , true, nil, nil, DOTA_TEAM_BADGUYS )
-  CreateUnitByName( attak_units[ DOTA_ATTAK_WAVE ], team_point[2] , true, nil, nil, DOTA_TEAM_BADGUYS )
-  CreateUnitByName( attak_units[ DOTA_ATTAK_WAVE ], team_point[3] , true, nil, nil, DOTA_TEAM_BADGUYS )
-  CreateUnitByName( attak_units[ DOTA_ATTAK_WAVE ], team_point[4] , true, nil, nil, DOTA_TEAM_BADGUYS )
-  DOTA_ATTAKER_UNITS_COUNT_IN_WAVE = DOTA_ATTAKER_UNITS_COUNT_IN_WAVE - 1
+for i=1, DOTA_ATTAKER_UNITS_COUNT_IN_WAVE do
+  CreateUnitByName( attak_units[ DOTA_ATTAK_WAVE ], creep_spawn_point[1] , true, nil, nil, DOTA_TEAM_BADGUYS )
+  CreateUnitByName( attak_units[ DOTA_ATTAK_WAVE ], creep_spawn_point[2] , true, nil, nil, DOTA_TEAM_BADGUYS )
+  CreateUnitByName( attak_units[ DOTA_ATTAK_WAVE ], creep_spawn_point[3] , true, nil, nil, DOTA_TEAM_BADGUYS )
+  CreateUnitByName( attak_units[ DOTA_ATTAK_WAVE ], creep_spawn_point[4] , true, nil, nil, DOTA_TEAM_BADGUYS )
 end 
 
-DOTA_ATTAKER_UNITS_COUNT_IN_WAVE = 10
 DOTA_ATTAK_WAVE_COPY = DOTA_ATTAK_WAVE
 DOTA_ATTAK_WAVE = DOTA_ATTAK_WAVE + 1 
 for _,v in pairs( Entities:FindAllByClassname(attak_units[ DOTA_ATTAK_WAVE_COPY ]) ) do
