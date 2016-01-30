@@ -184,7 +184,7 @@ end
 
 DOTA_ATTAKER_UNITS_COUNT_IN_WAVE = 10
 
-for _,v in pairs( Entity:FindByClassname(nil, attak_units[ DOTA_ATTAK_WAVE ])) do
+for _,v in pairs( Entities:FindByClassname(nil, attak_units[ DOTA_ATTAK_WAVE ]) ) do
   CreepsAI:MakeInstance(v,{v:GetAbsOrigin(), aggroRange = 250, leashRange = 250})
 end  
 DOTA_ATTAK_WAVE = DOTA_ATTAK_WAVE + 1 
