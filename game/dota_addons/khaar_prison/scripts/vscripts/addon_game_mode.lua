@@ -10,10 +10,13 @@ local team_point = {}
 local players_telepoted = false
 local players_count = 0
 local repeats = 0
+local creeps_ai_test = {}
+local creeps_ai_test_params
 local radiant_players = {}
 local dire_players = {}
 local players_heave_heroes = {}
 local pre_start_check_completed = false
+local DOTA_ATTAKER_UNITS_COUNT_IN_WAVE = 10
 
 function Precache( context )
 PrecacheUnitByNameSync("npc_dota_hero_sven", context)
@@ -55,10 +58,6 @@ end
 function GameMode:InitGameMode()
   print( "HORDE is loaded." )
   GameRules:SetHeroSelectionTime( 0.0 )
-  table.insert(team_point, Entities:FindByName( nil, "point_teleport_spot_team_1" ):GetAbsOrigin())
-  table.insert(team_point, Entities:FindByName( nil, "point_teleport_spot_team_2" ):GetAbsOrigin())
-  table.insert(team_point, Entities:FindByName( nil, "point_teleport_spot_team_3" ):GetAbsOrigin())
-  table.insert(team_point, Entities:FindByName( nil, "point_teleport_spot_team_4" ):GetAbsOrigin())
   --GameRules:GetGameModeEntity():SetThink( "OnThink", self, "GlobalThink", 2 )
   GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_GOODGUYS, 8 )
   GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_BADGUYS, 1 )
@@ -80,6 +79,10 @@ function GameMode:InitGameMode()
   GameRules:GetGameModeEntity():SetCameraDistanceOverride(1600)
   ListenToGameEvent( 'game_rules_state_change', Dynamic_Wrap(GameMode,'OnGameRulesChange'), self)
   ListenToGameEvent('npc_spawned', Dynamic_Wrap(GameMode, 'OnNPCSpawned'), self)
+  table.insert(team_point, Entities:FindByName( nil, "point_teleport_spot_team_1" ):GetAbsOrigin())
+  table.insert(team_point, Entities:FindByName( nil, "point_teleport_spot_team_2" ):GetAbsOrigin())
+  table.insert(team_point, Entities:FindByName( nil, "point_teleport_spot_team_3" ):GetAbsOrigin())
+  table.insert(team_point, Entities:FindByName( nil, "point_teleport_spot_team_4" ):GetAbsOrigin())
 end
 
 function GameMode:OnGameRulesChange(keys)
@@ -94,21 +97,23 @@ function GameMode:OnNPCSpawned(keys)
   if npc:IsRealHero() and npc.bFirstSpawned == nil then
     npc.bFirstSpawned = true
     print("HERO SPAWNED")
-    print(PlayerResource:IsValidPlayer(npc:GetPlayerOwnerID()))
     Timers:CreateTimer(0.5, function()
       GameMode:HeroSpawned(npc)
     end)
+  else 
+    print(#creeps_ai_test)
+  end  
 end
 
 function GameMode:OnThink()
   print('Think')
   if GameRules:State_Get() == DOTA_GAMERULES_STATE_GAME_IN_PROGRESS then
-    -- SOME CODE HERE
-    elseif GameRules:State_Get() >= DOTA_GAMERULES_STATE_POST_GAME then
-      return nil
+    GameMode:SpawnAttakers()
+  return 30
+  elseif GameRules:State_Get() >= DOTA_GAMERULES_STATE_POST_GAME then
+    return nil
   end 
-  return 1
-  end
+  return 0.1
 end
 
 function GameMode:PlayerHaveNoHero(keys)
@@ -127,10 +132,9 @@ function GameMode:HeroSpawned(keys)
   local sven_team_point = 0
   local point
   local hero
-  if PlayerResource:GetTeam(npc:GetPlayerID()) == 2 then
+  if PlayerResource:GetTeam(npc:GetPlayerID()) == DOTA_TEAM_GOODGUYS then
     if GameMode:PlayerHaveNoHero(npc:GetPlayerID()) == true then
       if repeats < 4 then
-        print(team_point[repeats + 1])
         print("Giving player " .. npc:GetPlayerOwnerID() .. "a new hero")
         for k,v in pairs(team_point) do
           if k == (repeats + 1) then
@@ -154,4 +158,31 @@ function GameMode:HeroSpawned(keys)
     else 
       PlayerResource:ReplaceHeroWith(npc:GetPlayerOwnerID(), "npc_dota_hero_nevermore", 625, 0)    
     end
+end
+
+function GameMode:SpawnAttakers()
+
+local DOTA_ATTAK_WAVE = 1
+local attak_units = {
+  "npc_dota_creature_kobold_tunneler",
+  "npc_dota_creature_gnoll_assassin",
+  "npc_dota_creature_troll_healer",
+  "npc_dota_creature_basic_zombie",
+  "npc_dota_creature_basic_zombie_exploding",
+  "npc_dota_creature_corpselord",
+  "npc_dota_creature_lesser_nightcrawler",
+  "npc_dota_creature_berserk_zombie"
+}
+
+while DOTA_ATTAKER_UNITS_COUNT_IN_WAVE ~= 0 do 
+  CreateUnitByName( attak_units[ DOTA_ATTAK_WAVE ], team_point[1] , true, nil, nil, DOTA_TEAM_BADGUYS )
+  CreateUnitByName( attak_units[ DOTA_ATTAK_WAVE ], team_point[2] , true, nil, nil, DOTA_TEAM_BADGUYS )
+  CreateUnitByName( attak_units[ DOTA_ATTAK_WAVE ], team_point[3] , true, nil, nil, DOTA_TEAM_BADGUYS )
+  CreateUnitByName( attak_units[ DOTA_ATTAK_WAVE ], team_point[4] , true, nil, nil, DOTA_TEAM_BADGUYS )
+end 
+
+for _,v in pairs( Entity:FindByClassname(nil, attak_units[ DOTA_ATTAK_WAVE ])) do
+  CreepsAI:MakeInstance(v,{v:GetAbsOrigin, aggroRange = 250, leashRange = 250})
+end  
+DOTA_ATTAK_WAVE = DOTA_ATTAK_WAVE + 1 
 end
