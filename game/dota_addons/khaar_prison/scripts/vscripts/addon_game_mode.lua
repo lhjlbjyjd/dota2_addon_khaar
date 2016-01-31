@@ -15,8 +15,8 @@ local radiant_players = {}
 local dire_players = {}
 local players_heave_heroes = {}
 local pre_start_check_completed = false
-local DOTA_ATTAKER_UNITS_COUNT_IN_WAVE = 25
-local DOTA_ATTAK_WAVE = 1
+local DOTA_ATTAСKER_UNITS_COUNT_IN_WAVE = 25
+local DOTA_ATTAСK_WAVE = 1
 
 function Precache( context )
 PrecacheUnitByNameSync("npc_dota_hero_sven", context)
@@ -165,7 +165,6 @@ end
 
 function GameMode:SpawnAttakers()
 
-local DOTA_ATTAK_WAVE_COPY
 local attak_units = {
   "npc_dota_creature_kobold_tunneler",
   "npc_dota_creature_gnoll_assassin",
@@ -177,16 +176,17 @@ local attak_units = {
   "npc_dota_creature_berserk_zombie"
 }
 
-for i=1, DOTA_ATTAKER_UNITS_COUNT_IN_WAVE do
-  CreateUnitByName( attak_units[ DOTA_ATTAK_WAVE ], creep_spawn_point[1] , true, nil, nil, DOTA_TEAM_BADGUYS )
-  CreateUnitByName( attak_units[ DOTA_ATTAK_WAVE ], creep_spawn_point[2] , true, nil, nil, DOTA_TEAM_BADGUYS )
-  CreateUnitByName( attak_units[ DOTA_ATTAK_WAVE ], creep_spawn_point[3] , true, nil, nil, DOTA_TEAM_BADGUYS )
-  CreateUnitByName( attak_units[ DOTA_ATTAK_WAVE ], creep_spawn_point[4] , true, nil, nil, DOTA_TEAM_BADGUYS )
+for i=1, DOTA_ATTAСKER_UNITS_COUNT_IN_WAVE do
+  CreateUnitByName( attak_units[ DOTA_ATTAСK_WAVE ], creep_spawn_point[1] , true, nil, nil, DOTA_TEAM_BADGUYS )
+  CreateUnitByName( attak_units[ DOTA_ATTAСK_WAVE ], creep_spawn_point[2] , true, nil, nil, DOTA_TEAM_BADGUYS )
+  CreateUnitByName( attak_units[ DOTA_ATTAСK_WAVE ], creep_spawn_point[3] , true, nil, nil, DOTA_TEAM_BADGUYS )
+  CreateUnitByName( attak_units[ DOTA_ATTAСK_WAVE ], creep_spawn_point[4] , true, nil, nil, DOTA_TEAM_BADGUYS )
 end 
 
-DOTA_ATTAK_WAVE_COPY = DOTA_ATTAK_WAVE
-DOTA_ATTAK_WAVE = DOTA_ATTAK_WAVE + 1 
-for _,v in pairs( Entities:FindAllByClassname(attak_units[ DOTA_ATTAK_WAVE_COPY ]) ) do
+for _,v in pairs( Entities:FindAllByClassname("npc_dota_crature_*") ) do
   CreepsAI:MakeInstance(v,{v:GetAbsOrigin(), aggroRange = 0, leashRange = 0})
-end  
+end 
+
+DOTA_ATTAСK_WAVE = DOTA_ATTAСK_WAVE + 1
+
 end
