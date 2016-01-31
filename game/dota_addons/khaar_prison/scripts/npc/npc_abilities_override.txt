@@ -11,8 +11,8 @@
     //-------------------------------------------------------------------------------------------------------------
     "AbilityBehavior"       "DOTA_ABILITY_BEHAVIOR_UNIT_TARGET"
     "AbilityUnitTargetTeam"     "DOTA_UNIT_TARGET_TEAM_FRIENDLY"
-    "AbilityUnitTargetType"     "DOTA_UNIT_TARGET_CUSTOM | DOTA_UNIT_TARGET_BUILDING"
-    "SpellImmunityType"       "SPELL_IMMUNITY_ENEMIES_NO"
+    "AbilityUnitTargetType"     "DOTA_UNIT_TARGET_ALL"
+    "SpellImmunityType"       "SPELL_IMMUNITY_ALLIES_YES"
 
     // Casting
     //-------------------------------------------------------------------------------------------------------------
@@ -25,7 +25,7 @@
 
     // Cost
     //-------------------------------------------------------------------------------------------------------------
-    "AbilityManaCost"       "400 400 400 400"
+    "AbilityManaCost"       "40 40 40 400"
     
     // Cast Range
     //-------------------------------------------------------------------------------------------------------------
@@ -82,3 +82,5 @@
       }
     }
   }
+
+}

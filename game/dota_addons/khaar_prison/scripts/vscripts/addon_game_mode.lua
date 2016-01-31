@@ -59,6 +59,7 @@ function GameMode:InitGameMode()
   print( "HORDE is loaded." )
   GameRules:SetHeroSelectionTime( 0.0 )
   GameRules:GetGameModeEntity():SetThink( "OnThink", self, "GlobalThink", 2 )
+  GameRules:GetGameModeEntity():SetThink( "OnThink", self, "GlobalThink", 2 )
   GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_GOODGUYS, 8 )
   GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_BADGUYS, 1 )
   GameRules:SetUseUniversalShopMode( true )
@@ -177,10 +178,9 @@ local attak_units = {
 }
 
 for i=1, DOTA_ATTAСKER_UNITS_COUNT_IN_WAVE do
-  CreateUnitByName( attak_units[ DOTA_ATTAСK_WAVE ], creep_spawn_point[1] , true, nil, nil, DOTA_TEAM_BADGUYS )
-  CreateUnitByName( attak_units[ DOTA_ATTAСK_WAVE ], creep_spawn_point[2] , true, nil, nil, DOTA_TEAM_BADGUYS )
-  CreateUnitByName( attak_units[ DOTA_ATTAСK_WAVE ], creep_spawn_point[3] , true, nil, nil, DOTA_TEAM_BADGUYS )
-  CreateUnitByName( attak_units[ DOTA_ATTAСK_WAVE ], creep_spawn_point[4] , true, nil, nil, DOTA_TEAM_BADGUYS )
+  for q=1, 4 do
+    CreateUnitByName( attak_units[ DOTA_ATTAСK_WAVE ], creep_spawn_point[q] , true, nil, nil, DOTA_TEAM_BADGUYS )
+  end  
 end 
 
 for _,v in pairs( Entities:FindAllByClassname("npc_dota_crature_*") ) do
