@@ -2,5 +2,78 @@
 // Dota Abilities Override File
 "DOTAAbilities"
 {
+"wisp_tower_flack"
+  {
+    // General
+    //-------------------------------------------------------------------------------------------------------------
+    "BaseClass"														"ability_datadriven"
+    "AbilityBehavior"												"DOTA_ABILITY_BEHAVIOR_UNIT_TARGET"
+	"AbilityUnitTargetTeam"											"DOTA_UNIT_TARGET_TEAM_FRIENDLY"
+	"AbilityUnitTargetType"											"DOTA_UNIT_TARGET_BUILDING"
+	"SpellImmunityType"												"SPELL_IMMUNITY_ALLIES_YES"
+	"AbilityTextureName"    										"gyrocopter_flak_cannon"
+	"AbilityType"            										"DOTA_ABILITY_TYPE_BASIC"
+
+    // Casting
+    //-------------------------------------------------------------------------------------------------------------
+    "AbilityCastPoint"        "0.3"
+
+    // Time   
+    //-------------------------------------------------------------------------------------------------------------
+    "AbilityCooldown"       "120"
+    "AbilityDuration"       "5.0"
+
+    // Cost
+    //-------------------------------------------------------------------------------------------------------------
+    "AbilityManaCost"       "100 100 100 100"
+    
+    // Cast Range
+    //-------------------------------------------------------------------------------------------------------------
+    "AbilityCastRange"        "900 900 900 900"
+
+    // Special
+    //-------------------------------------------------------------------------------------------------------------
+    "AbilitySpecial"
+    {
+        "01"
+        {
+            "var_type" "FIELD_INTEGER"
+            "attck_spd_bonus" "70"
+        }
+        "02"
+        {
+			"var_type"						"FIELD_INTEGER"
+			"radius"						"1000"
+		}
+  	}
+
+  	// Modifiers
+  	//-------------------------------------------------------------------------------------------------------------
+  	"OnSpellStart"
+    {
+        "ApplyModifier"
+        {
+            "Target" "TARGET"
+            "ModifierName" "tower_flak_modifier"
+        }
+    }
+  	"Modifiers"
+	{
+    	"tower_flak_modifier"
+    		{
+    			"Duration"         "5"
+    			"Passive"          "1"    
+    			"TextureName"      "gyrocopter_flak_cannon"
+    			"IsBuff" 		   "1"
+    			"IsDebuff"         "0"
+    			"IsHidden"         "0"
+    			"IsPurgable"       "0" 
+    			"Properties"
+    				{
+        				"MODIFIER_PROPERTY_ATTACKSPEED_BONUS_CONSTANT"			"%attck_spd_bonus"
+    				}
+    		}
+	}
+  }
 }
 

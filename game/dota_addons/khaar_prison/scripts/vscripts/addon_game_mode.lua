@@ -15,7 +15,7 @@ local radiant_players = {}
 local dire_players = {}
 local players_heave_heroes = {}
 local pre_start_check_completed = false
-local DOTA_ATTAСKER_UNITS_COUNT_IN_WAVE = 25
+local DOTA_ATTAСKER_UNITS_COUNT_IN_WAVE = 15
 local DOTA_ATTAСK_WAVE = 1
 
 function Precache( context )
@@ -136,8 +136,8 @@ function GameMode:HeroSpawned(keys)
   local sven_team_point = 0
   local point
   local hero
-  if PlayerResource:GetTeam(npc:GetPlayerID()) == DOTA_TEAM_GOODGUYS then
-    if GameMode:PlayerHaveNoHero(npc:GetPlayerID()) == true then
+  if GameMode:PlayerHaveNoHero(npc:GetPlayerID()) == true then
+    if PlayerResource:GetTeam(npc:GetPlayerID()) == DOTA_TEAM_GOODGUYS then
       if repeats < 4 then
         print("Giving player " .. npc:GetPlayerOwnerID() .. "a new hero")
         for k,v in pairs(team_point) do
@@ -157,16 +157,16 @@ function GameMode:HeroSpawned(keys)
         PlayerResource:ReplaceHeroWith(npc:GetPlayerOwnerID(), "npc_dota_hero_sven", 625, 0)
         FindClearSpaceForUnit(PlayerResource:ReplaceHeroWith(npc:GetPlayerOwnerID(), "npc_dota_hero_wisp", 625, 0), point, false)
         sven_team_point= sven_team_point + 1  
-      end
-    end  
+      end  
     else 
       PlayerResource:ReplaceHeroWith(npc:GetPlayerOwnerID(), "npc_dota_hero_nevermore", 625, 0)    
     end
+  end  
 end
 
 function GameMode:SpawnAttakers()
 
-local attak_units = {
+local attack_units = {
   "npc_dota_creature_kobold_tunneler",
   "npc_dota_creature_gnoll_assassin",
   "npc_dota_creature_troll_healer",
@@ -179,12 +179,12 @@ local attak_units = {
 
 for i=1, DOTA_ATTAСKER_UNITS_COUNT_IN_WAVE do
   for q=1, 4 do
-    CreateUnitByName( attak_units[ DOTA_ATTAСK_WAVE ], creep_spawn_point[q] , true, nil, nil, DOTA_TEAM_BADGUYS )
+    CreateUnitByName( attack_units[ DOTA_ATTAСK_WAVE ], creep_spawn_point[q] , true, nil, nil, DOTA_TEAM_BADGUYS )
   end  
 end 
 
-for _,v in pairs( Entities:FindAllByClassname("npc_dota_crature_*") ) do
-  CreepsAI:MakeInstance(v,{v:GetAbsOrigin(), aggroRange = 0, leashRange = 0})
+for _,v in pairs( Entities:FindAllByClassname( attack_units[ DOTA_ATTAСK_WAVE ] ) ) do
+  CreepsAI:MakeInstance(v,{spawnPos = v:GetAbsOrigin(), aggroRange = 0, leashRange = 0})
 end 
 
 DOTA_ATTAСK_WAVE = DOTA_ATTAСK_WAVE + 1

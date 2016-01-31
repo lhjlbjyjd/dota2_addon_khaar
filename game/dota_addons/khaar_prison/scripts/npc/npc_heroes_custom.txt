@@ -1,3 +1,8 @@
 "DOTAHeroes"
 {
+"npc_dota_hero_wisp_modified"
+    {
+        "override_hero"                         "npc_dota_hero_wisp"
+        "Ability7"                              "wisp_tower_flack"
+    }
 }

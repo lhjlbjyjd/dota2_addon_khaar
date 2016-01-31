@@ -3,33 +3,31 @@
 "DOTAAbilities"
 {
   "Version"   "1"
-  
-  
-"wisp_tether"
+
+  //=================================================================================================================
+  // Lich: Dark Ritual
+  //=================================================================================================================
+  "lich_dark_ritual"
   {
     // General
     //-------------------------------------------------------------------------------------------------------------
-    "AbilityBehavior"       "DOTA_ABILITY_BEHAVIOR_UNIT_TARGET"
-    "AbilityUnitTargetTeam"     "DOTA_UNIT_TARGET_TEAM_FRIENDLY"
-    "AbilityUnitTargetType"     "DOTA_UNIT_TARGET_ALL"
-    "SpellImmunityType"       "SPELL_IMMUNITY_ALLIES_YES"
-
+    "AbilityBehavior"       "DOTA_ABILITY_BEHAVIOR_UNIT_TARGET | DOTA_ABILITY_BEHAVIOR_DONT_RESUME_ATTACK"
+    "AbilityUnitTargetTeam"     "DOTA_UNIT_TARGET_TEAM_BOTH"
+    "AbilityUnitTargetType"     "DOTA_UNIT_TARGET_BASIC"
+    "AbilityUnitTargetFlags"    "DOTA_UNIT_TARGET_FLAG_NOT_SUMMONED | DOTA_UNIT_TARGET_FLAG_NOT_ANCIENTS | DOTA_UNIT_TARGET_FLAG_NOT_CREEP_HERO"
+    
     // Casting
     //-------------------------------------------------------------------------------------------------------------
-    "AbilityCastPoint"        "0.001 0.001 0.001 0.001"
+    "AbilityCastRange"        "400"
+    "AbilityCastPoint"        "0.4 0.4 0.4 0.4"
 
     // Time   
     //-------------------------------------------------------------------------------------------------------------
-    "AbilityCooldown"       "12.0 12.0 12.0 12.0"
-    "AbilityDuration"       "12.0 12.0 12.0 12.0"
+    "AbilityCooldown"       "44 36 28 20"
 
     // Cost
     //-------------------------------------------------------------------------------------------------------------
-    "AbilityManaCost"       "40 40 40 400"
-    
-    // Cast Range
-    //-------------------------------------------------------------------------------------------------------------
-    "AbilityCastRange"        "1800 1800 1800 1800"
+    "AbilityManaCost"       "25 25 25 25"
 
     // Special
     //-------------------------------------------------------------------------------------------------------------
@@ -37,48 +35,8 @@
     {
       "01"
       {
-        "var_type"          "FIELD_INTEGER"
-        "radius"          "900 900 900 900"
-      }
-      "02"
-      {
-        "var_type"          "FIELD_INTEGER"
-        "movespeed"         "14 15 16 17"
-      }
-      "03"
-      {
-        "var_type"          "FIELD_INTEGER"
-        "latch_distance"      "700 700 700 700"
-      }
-      "04"
-      {
-        "var_type"          "FIELD_INTEGER"
-        "latch_speed"       "1000 1000 1000 1000"
-      }
-      "05"
-      {
-        "var_type"          "FIELD_FLOAT"
-        "tether_duration"     "12.0 12.0 12.0 12.0"
-      }
-      "06"
-      {
-        "var_type"          "FIELD_FLOAT"
-        "tether_heal_amp"     "1.5"
-      }
-      "07"
-      {
-        "var_type"          "FIELD_INTEGER"
-        "slow"      "-100"
-      }
-      "08"
-      {
-        "var_type"          "FIELD_INTEGER"
-        "attackslow_tooltip"      "-100"
-      }
-      "09"
-      {
-        "var_type"          "FIELD_FLOAT"
-        "stun_duration"       "0.75 1.25 1.75 2.25"
+        "var_type"        "FIELD_INTEGER"
+        "health_conversion"   "25 40 55 70"
       }
     }
   }

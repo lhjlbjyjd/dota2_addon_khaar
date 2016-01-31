@@ -370,6 +370,7 @@
 		"GameSoundsFile"			"soundevents/game_sounds_creeps.vsndevts"
 		"Level"						"1"
 		"ModelScale" 				".9"
+		"UseNeutralCreepBehavior" 	"0"
 
 		// Abilities
 		//----------------------------------------------------------------
@@ -463,6 +464,7 @@
 		"GameSoundsFile"			"soundevents/game_sounds_creeps.vsndevts"
 		"Level"						"1"
 		"ModelScale" 				".9"
+		"UseNeutralCreepBehavior" 	"0"
 
 		// Abilities
 		//----------------------------------------------------------------
